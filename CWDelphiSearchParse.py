@@ -1,6 +1,7 @@
 #!/usr/bin/python
 
 import string
+import copy
 
 from CWDelphiSearchModel import CWDelphiClass
 
@@ -91,6 +92,23 @@ class CWDelphiSearchParse:
 
 		return False		
 
+	def findBetween(self, s, first, last ):
+		try:
+			start = s.index( first ) + len( first )
+			end = s.index( last, start )
+			return s[start:end]
+		except ValueError:
+			return ""
+
+	def searchForDependencies(self, foundDelphi):
+		searchDelphi = list(foundDelphi)
+		for found in foundDelphi:			
+			for search in searchDelphi:
+				for foundClass in found.classes:
+					for searchClass in search.classes:
+						if foundClass.name == searchClass.superClass:
+							foundClass.dependencies.append(searchClass.name)
+
 	def ParseFile(self, path):		
 		classes = []
 		self.delphiClass = None	
@@ -105,7 +123,8 @@ class CWDelphiSearchParse:
 				if self.delphiClass != None:
 					classes.append(self.delphiClass)
 				self.delphiClass = CWDelphiClass()
-				self.delphiClass.name = line.split('=')[0]
+				self.delphiClass.name = line.split('=')[0].translate(None, string.whitespace)
+				self.delphiClass.superClass = self.findBetween(line, "(", ")").translate(None, string.whitespace)
 				self.SetFlags(False, False, False, False, False, True)
 				continue
 			

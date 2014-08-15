@@ -5,6 +5,7 @@ import os
 from CWDelphiSearchSave import CWDelphiSearchSave
 from CWDelphiSearchParse import CWDelphiSearchParse
 from CWDelphiSearchModel import CWDelphi
+from CWDelphiSearchGraph import CWGraph
 
 documentation = []
 
@@ -17,6 +18,10 @@ for dirInfo in os.walk('.'):
 			delphi.directory = directory
 			delphi.classes = CWDelphiSearchParse().ParseFile(delphi.directory+"/"+delphi.unit)
 			documentation.append(delphi)
+
+CWDelphiSearchParse().searchForDependencies(documentation)
+
+graph = CWGraph()
 
 delphiSearchSave = CWDelphiSearchSave(documentation)
 delphiSearchSave.Save()
