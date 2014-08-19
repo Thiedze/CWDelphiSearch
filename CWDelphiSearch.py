@@ -9,6 +9,7 @@ from CWDelphiSearchGraph import CWGraph
 
 documentation = []
 
+print("Search and parse delphi files.")
 for dirInfo in os.walk('.'):
 	directory = dirInfo[0]
 	for file in os.listdir(directory):
@@ -19,9 +20,13 @@ for dirInfo in os.walk('.'):
 			delphi.classes = CWDelphiSearchParse().ParseFile(delphi.directory+"/"+delphi.unit)
 			documentation.append(delphi)
 
+print("Search dependencies.")
 CWDelphiSearchParse().searchForDependencies(documentation)
 
-graph = CWGraph()
+print("Draw and save classdiagram.")
+graph = CWGraph(documentation)
+graph.CreateClassDiagram()
 
+print("Save.")
 delphiSearchSave = CWDelphiSearchSave(documentation)
 delphiSearchSave.Save()
