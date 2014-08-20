@@ -12,7 +12,12 @@ class CWDelphiSearchSave:
 				textFile.write("	Unit: {}\n".format(delphi.unit))
 			
 				for delphiClass in delphi.classes:
-					textFile.write("		Class: {}\n".format(delphiClass.name))
+					textFile.write("		Class: {0} ({1})\n".format(delphiClass.name, delphiClass.superClass))
+					
+					if len(delphiClass.dependencies) > 0:
+						textFile.write("			Dependencies: \n")
+						for dependency in delphiClass.dependencies:
+							textFile.write("				{}\n".format(dependency))
 					
 					if len(delphiClass.nonFlagedFunctions) > 0:
 						for nonFlaged in delphiClass.nonFlagedFunctions:

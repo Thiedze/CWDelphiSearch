@@ -10,6 +10,8 @@ class CWDelphiClass:
 		self.protectedFunctions = []
 		self.publishedFunctions = []
 		self.nonFlagedFunctions = []
+		self.superClass = ''
+		self.dependencies = []
 
 class CWDelphi:
 
